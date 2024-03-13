@@ -1,42 +1,53 @@
-//Syntaxe de base
-const a: string = "Hello world";
-const n: number = 3;
-const b: boolean = true;
-const d: null = null;
-const arr: string[] = ["aze", "aze"]; //Tableau de chaine de caractère
-const arr2: any[] = ["aze", 3] //Tableau qui contiennent plusieurs types de valeurs
-//Type Any pour dire n'importe quel type (à éviter au max)
-//Typescript est capable de comprendre les types automatiquement quand on met directement une valeur (comme dans les const si dessus on peut enlever le typage)
-const user: {
-    [key: string]: string,
-   firstname: string,
-} = {
-    "key": "key1",
-   firstname: "John",
-};
-const date: Date = new Date()
-const callBack: Function = (e: MouseEvent): void => {
+//narrowing : permet à typescript d'être capable d'éliminer des cas et de réduire les types possibles pour les variables
 
+function printId(id: string | number) {
+   if (typeof id === "number") {
+      console.log((id * 3).toString());
+   } else {
+      //Il sait exactement que id est du string
+      console.log(id.toUpperCase());
+   }
 }
-const cb:(e: MouseEvent) => void = (e: MouseEvent): number => {
-    return 3
+function example(a: string | boolean, b: string | number) {
+   if (a === b) {
+      a;
+   }
 }
-// On peut spécifié les retours des fonctions : void pour dire ne retourne rien
-function printId(id: number | string): void { //number ou string
-    console.log(id.toString())
+function example2(a: string | Date) {
+   if (a instanceof Date) {
+      a;
+   }
 }
 
-const compteur = document.querySelector("#compteur") as HTMLButtonElement
-// alternative
-const compteur2= <HTMLButtonElement>document.querySelector("#compteur")
+function example3(a: MouseEvent | HTMLInputElement) {
+   if ("value" in a) {
+      a;
+   }
+   //type never pour les cas qui ne pourrons jamais apparaitre (très peu utiliser (jamais))
+}
 
-let i = 0
-const increment =(e: Event) =>{
-    i++
-    const span = compteur?.querySelector('span')
-    if (span) {
-        span.innerText = i.toString()
+function isDate(a: any) : a is Date {
+    return a instanceof Date
+}
+function example4(a: string | Date) {
+    if (isDate(a)) {
+       a;
     }
-}
+ }
 
-compteur?.addEventListener('click', increment)
+ const compteur = document.querySelector("#compteur") as HTMLButtonElement;
+ const compteur2 = document.querySelector("#compteur")! //pour dire que compteur2 doit obligatoirement existé (a éviter)
+
+let i = 0;
+const increment = (e: Event) => {
+   i++;
+   const span = compteur?.querySelector("span");
+   if (span) {
+      //c'est du narrowing : si la condition est rempli alors on ne peut pas être dans le type de span null ou undefined ; Il sait exactement que c'est du HTMLSpanElement (survoler span si dessous pour confirmer)
+      span.innerText = i.toString();
+   }
+};
+
+compteur?.addEventListener("click", increment);
+
+//On utilise souvent le narrowing pour éliminer la valeur null
