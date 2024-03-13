@@ -1,53 +1,38 @@
-//narrowing : permet à typescript d'être capable d'éliminer des cas et de réduire les types possibles pour les variables
+//Alias
+type User = {firstname: string, lastname: string}
+type DateString = string
+type Id = string | number
+type Identity<ArgType> = (arg: ArgType) => ArgType
+type Username = User['firstname']
 
-function printId(id: string | number) {
-   if (typeof id === "number") {
-      console.log((id * 3).toString());
-   } else {
-      //Il sait exactement que id est du string
-      console.log(id.toUpperCase());
-   }
+//Extraire un type à partir d'une constante (pas trop utilisé)
+const user1 = {
+    firstname: 'John',
+    lastname: 'Doe',
+    age: 32
 }
-function example(a: string | boolean, b: string | number) {
-   if (a === b) {
-      a;
-   }
-}
-function example2(a: string | Date) {
-   if (a instanceof Date) {
-      a;
-   }
-}
+type User1 = typeof user1
 
-function example3(a: MouseEvent | HTMLInputElement) {
-   if ("value" in a) {
-      a;
-   }
-   //type never pour les cas qui ne pourrons jamais apparaitre (très peu utiliser (jamais))
+const user: User = {firstname: "John", lastname: "Doe"}
+
+function identity<ArgType>(arg: ArgType): ArgType { //choisir le type de arg une fois et le retour doit être du même type
+    return arg
+}
+const a = identity<number>(3)
+const b = identity(3) //comprend que c'est un nombre même si on ne met pas number
+
+function first<Type>(arg: Type[]): Type {
+    return arg[0]
 }
 
-function isDate(a: any) : a is Date {
-    return a instanceof Date
+const aa = first(["aze", "bze", 3])
+const ab: Array<string | number> = ["aze", "bze", 3]
+
+const compteur = document.querySelector<HTMLButtonElement>('#compteur')
+
+//l'argument doit obligatoirement avoir un attribut length (les nombres ne marchent pas)
+function consoleSize<Type extends {length: number}>(arg: Type): Type {
+    console.log(arg.length)
+    return arg
 }
-function example4(a: string | Date) {
-    if (isDate(a)) {
-       a;
-    }
- }
-
- const compteur = document.querySelector("#compteur") as HTMLButtonElement;
- const compteur2 = document.querySelector("#compteur")! //pour dire que compteur2 doit obligatoirement existé (a éviter)
-
-let i = 0;
-const increment = (e: Event) => {
-   i++;
-   const span = compteur?.querySelector("span");
-   if (span) {
-      //c'est du narrowing : si la condition est rempli alors on ne peut pas être dans le type de span null ou undefined ; Il sait exactement que c'est du HTMLSpanElement (survoler span si dessous pour confirmer)
-      span.innerText = i.toString();
-   }
-};
-
-compteur?.addEventListener("click", increment);
-
-//On utilise souvent le narrowing pour éliminer la valeur null
+const abb = consoleSize(['3', 2])

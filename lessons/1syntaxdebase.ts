@@ -22,21 +22,21 @@ const cb:(e: MouseEvent) => void = (e: MouseEvent): number => {
     return 3
 }
 // On peut spécifié les retours des fonctions : void pour dire ne retourne rien
-function printId(id: number | string): void { //number ou string
+function printId1(id: number | string): void { //number ou string
     console.log(id.toString())
 }
 
-const compteur = document.querySelector("#compteur") as HTMLButtonElement
+const compteur3 = document.querySelector("#compteur") as HTMLButtonElement
 // alternative
-const compteur2= <HTMLButtonElement>document.querySelector("#compteur")
+const compteur5= <HTMLButtonElement>document.querySelector("#compteur")
 
-let i = 0
-const increment =(e: Event) =>{
-    i++
-    const span = compteur?.querySelector('span')
+let i2 = 0
+const increment6 =(e: Event) =>{
+    i2++
+    const span = compteur3?.querySelector('span')
     if (span) {
-        span.innerText = i.toString()
+        span.innerText = i2.toString()
     }
 }
 
-compteur?.addEventListener('click', increment)
+compteur3?.addEventListener('click', increment6)
