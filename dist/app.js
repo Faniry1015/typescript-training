@@ -4,3 +4,5 @@ function reverse(arr) {
     return [...arr].reverse();
 }
 //Classes
+class A {
+}
