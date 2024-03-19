@@ -56,6 +56,3 @@ const enum STEPS2 {
 const step2: STEPS2 = STEPS2.Intro
 
 //avantage : proposition fait à JS qui sera peut-être supporter directement par JS dans le futur; plus court à écrire que les types
-
-
-   
